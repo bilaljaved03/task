@@ -3,8 +3,8 @@ const { User } = require("../models/user");
 const logger = require("../utils/logger");
 const {uploadImage}  = require('../services/ImageUploadService')
 const login = async (req, res) => {
-  console.log("HEy bro");
   const { email, password } = req.body;
+  console.log(req.body);
 
   try {
     const user = await User.findFirst({
@@ -14,7 +14,7 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    logger.info("Data fetched successfully:", data);
+    // logger.info("Data fetched successfully:", data);
     // Generate JWT token
     const token = jwt.sign({ userId: user.id }, "BILAL");
 
@@ -23,9 +23,8 @@ const login = async (req, res) => {
       httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
       sameSite: "Strict",
     });
-
     // Send response with token
-    res.json({ token });
+    res.json({email:user.email, token });
   } catch (error) {
     console.error(error);
     logger.error('Error fetching data from the database:', error);

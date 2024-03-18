@@ -1,36 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { loginUser } from "./loginUserApi";
 const initialState = {
   isLoggedIn: 0,
   user: null,
   error: null,
   loading: false,
 };
-export const loginUser = createAsyncThunk(
-    'auth/loginUser',
-    async ({ username, password }, thunkAPI) => {
-      try {
-        const response = await fetch('http://localhost:8000/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username, password }),
-        credentials: 'include',
-        });
-  
-        if (!response.ok) {
-          throw new Error('Login failed');
-        }
-  
-        const userData = await response.json();
-        return userData;
-      } catch (error) {
-        return thunkAPI.rejectWithValue(error.message);
-      }
-    }
-  );
-  
-
 export const loginSlice = createSlice({
   name: "login",
   initialState,
@@ -69,7 +44,6 @@ export const loginSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
 export const { loginSuccess, loginFailure, logout } = loginSlice.actions;
 
 export default loginSlice.reducer;
