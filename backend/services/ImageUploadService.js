@@ -26,9 +26,6 @@ async function uploadImage(req){
         return (JSON.stringify(cldRes))
       } catch (error) {
         console.log(error);
-        res.send({
-          message: error.message,
-        });
       }
 }
 // {**************************************************************}

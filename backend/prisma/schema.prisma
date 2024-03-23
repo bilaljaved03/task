@@ -19,4 +19,15 @@ model User{
   email String?
   password String?
   age Int
+  books Book[]
+}
+
+model Book{
+  id Int @id @default(autoincrement())
+  name String?
+  genre String?
+  authorId Int
+  year Int
+  img_url String
+  Author User? @relation(fields: [authorId],references: [id])
 }

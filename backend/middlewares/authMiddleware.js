@@ -1,7 +1,8 @@
 const authMiddleware = (req, res, next) => {
  
     if (req.cookies['user']) {
-        req.user = req.cookies['user'];
+       const USER = JSON.parse(req.cookies['user']);
+    req.user = USER;
       }
  
   next();

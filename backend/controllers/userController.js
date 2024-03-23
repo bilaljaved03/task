@@ -5,7 +5,7 @@ const logger = require("../utils/logger");
 const { uploadImage } = require("../services/ImageUploadService");
 const getProfile = async (req, res) => {
   try {
-    const userData = JSON.parse(req.user);
+    // const userData = JSON.parse(req.user);
     const userId = userData.userId;
     const user = await User.findUnique({
       where: {
