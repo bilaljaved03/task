@@ -2,7 +2,6 @@ import React from "react";
 import 'video-react/dist/video-react.css';
 import ProgressButton from './comps/ProgressButton'
 import ListItem from "./comps/ListItem";
-import DocumentViewer from "./comps/DocumentViewer";
 import { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route ,useParams} from 'react-router-dom'
 const Home = () => {
@@ -48,8 +47,6 @@ const Home = () => {
             title="Moon Landing"
             videoSrc={'/video_2.mp4'}
           />
-
-
         </ul>
       </div>
     </div>
@@ -74,20 +71,15 @@ const ImageViewer = (imgrc) =>{
     </>
       )
 }
-
 const App = () => {
-
   return (
-
     <Router>
       <Routes>
         <Route path="/" Component={Home} />
         <Route path="image-viewer/:path" Component={ImageViewer} />
         <Route path="/about" Component={About} />
-
       </Routes>
     </Router>
-
   );
 };
 
