@@ -15,29 +15,26 @@ function PopUpDisplay({
   documentPercentage,
   setDocumentPercentage
 }) {
-
-
   const [isVideoUpdating, setVideoUpdate] = useState(false)
   const [isDocumentViewerDisplaying, setDocumentViewerDisplay] = useState(false)
+  const [isFirstPlay,setFirstPlay] = useState(true)
   const videoRef = useRef(null);
   const contentRef = useRef(null);
   const handleVideoEnd = () => {
     setVideoPausedTime(0);
     setVideoPausedMiliSeconds(0);
   };
-
   const handleImageViewNavigation = (imgSrc) => {
     setImagePercentage(100)
   };
-
   const handleDocumentContentDivScroll = () => {
     if (contentRef.current) {
       const scrollPosition = contentRef.current.scrollTop;
       const scrollHeight = contentRef.current.scrollHeight;
       const clientHeight = contentRef.current.clientHeight;
       const percentage = (scrollPosition / (scrollHeight - clientHeight)) * 100;
-      setDocumentPercentage(percentage.toFixed(2));
-      // console.log(percentage)
+      if (percentage > documentPercentage)
+        setDocumentPercentage(percentage.toFixed(2));
     }
 
   }
@@ -76,7 +73,8 @@ function PopUpDisplay({
             }} className='container document-container bg-light overflow-y-scroll  shadow-lg rounded me-5 ms-5'
           >
 
-            <div className="container">
+            <div className="container p-5 ">
+              <h2>Moon Landing</h2>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro harum provident illo saepe neque quisquam temporibus optio obcaecati labore, sed est itaque a reiciendis atque, deserunt at perspiciatis. Perspiciatis, asperiores.
               Unde, expedita sed sequi voluptatibus similique quidem! Harum quas, repellat minima cumque facere, repellendus commodi inventore, est voluptatum corporis aperiam deserunt voluptatem omnis a! At vero rerum quaerat totam provident!
               Quia totam laborum, vero quo facere reprehenderit nobis quae cum minima maxime tempora temporibus error, natus at delectus asperiores vitae, doloribus sit sint exercitationem aliquam tempore quisquam laudantium mollitia! Voluptates.
@@ -100,16 +98,22 @@ function PopUpDisplay({
               Magni reprehenderit fugiat amet cumque aspernatur hic explicabo ipsa perspiciatis quaerat harum aliquid ad, perferendis beatae unde sequi ipsum accusantium dicta sint repudiandae earum. Inventore ratione distinctio laboriosam culpa nemo?
               Voluptatum assumenda delectus, provident iusto, sunt suscipit labore minus aperiam, laboriosam non totam ex repudiandae harum eveniet et numquam? Vel tenetur ad blanditiis, ducimus odio illo nostrum minus molestias ratione.
               Similique ipsam nulla velit cupiditate. Ipsa recusandae nobis neque, doloremque reiciendis animi error est quam facere, ea et voluptates reprehenderit autem consequuntur corporis sed mollitia quae perspiciatis nemo provident eaque.
-            
             </div>
             <button
+              style={{
+                position: "fixed"
+                , top: "13%", right: "22vh",
+                borderRadius: "50%",
+                width: "3.3rem",
+                height: "3.1rem",
+              }}
               onClick={() => setDocumentViewerDisplay(false)}
-              className='btn btn-primary '> close</button>
+              className='btn btn-primary '>
+              <FaTimes fontSize={18} />
+            </button>
           </div>
         }
-
         {/* ///////////////////////// */}
-
         <div className="cross-button pe-3 pt-3 d-flex  justify-content-end">
           <button
             onClick={() => setPopUpDisplay(false)}
@@ -120,8 +124,11 @@ function PopUpDisplay({
             <video
               onPlay={() => {
                 setVideoUpdate(true)
-                const video = videoRef.current;
-                video.currentTime = videoPausedMiliSeconds
+                if(isFirstPlay){
+                  const video = videoRef.current;
+                  video.currentTime = videoPausedMiliSeconds
+                }
+               setFirstPlay(false)
               }}
               onPause={() => {
                 setVideoUpdate(false)
@@ -134,12 +141,10 @@ function PopUpDisplay({
                 setVideoPausedMiliSeconds(currentTime)
               }}
               onTimeUpdate={(e) => {
+                setVideoUpdate(true)
                 const currentTime = e.target.currentTime;
                 const duration = e.target.duration;
                 setVideoPausedTime(currentTime)
-                // console.log(`Current time: ${currentTime} seconds`);
-                // console.log(`Duration: ${duration} seconds`);
-
               }}
               ref={videoRef}
               autoPlay controls style={{ width: 300, height: 300 }}>
